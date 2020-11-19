@@ -31,9 +31,9 @@ public class Helper {
 
     public static void main(String[] args) {
 
-//        easy24708_1_1();
+        easy24708_1_1();
 //        easy24708_1_2();
-        easy24708_1_3();
+//        easy24708_1_3();
     }
 
     private static void easy24708_1_3() {
@@ -60,15 +60,20 @@ public class Helper {
     }
 
     private static void easy24708_1_1() {
+//430 132
+//128 286
+        rangePoints=new int[][]{{1720,528},{512,1144}};
         getGreyImage("src/input/24708.jpg", 189);
+        drawImg();
         int largestIndex = labelComponents();
         getLargestComponent(largestIndex);
-        dilate();
-        dilate();
-        dilate();
-        erode();
-        buildCC();
-        thin(new double[]{19.0, 0.2});
+
+//        dilate();
+//        dilate();
+//        dilate();
+//        erode();
+//        buildCC();
+//        thin(new double[]{19.0, 0.2});
     }
 
     private static void getGreyImageFromInput(BufferedImage img) {
@@ -82,13 +87,42 @@ public class Helper {
 
     }
 
+    private static boolean pointInRange(int x, int y) {
+        int crossTimes = 0;
+        for (int i = 0; i < rangePoints.length; i++) {
+            int[] point1 = new int[2];
+            int[] point2 = new int[2];
+            point1[0] = rangePoints[i][0];
+            point1[1] = rangePoints[i][1];
+            if (i == rangePoints.length - 1) {
+                point2[0] = rangePoints[0][0];
+                point2[1] = rangePoints[0][1];
+            } else {
+                point2[0] = rangePoints[i + 1][0];
+                point2[1] = rangePoints[i + 1][1];
+            }
+
+            double slope = ((double) (point2[1] - point1[1])) /((double) (point2[0] - point1[0]));
+            boolean condition1 = (point1[0] <= x) && (x < point2[0]);
+            boolean condition2 = (point2[0] <= x) && (x < point1[0]);
+            boolean above = (y < slope * (x - point1[0]) + point1[1]);
+            if ((condition1 || condition2) && above) crossTimes++;
+
+        }
+        return crossTimes % 2 != 0;
+    }
+
     private static void thresholdImg(int thrValue) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 if (y >= minHeight && y <= maxHeight && x >= minWidth && x <= maxWidth) {
-                    grayscaleArray[y][x] = new Color(OriginImg.getRGB(x, y)).getRed();
-                    int newPixelValue = threshold(thrValue, grayscaleArray[y][x]);
-                    grayscaleArray[y][x] = newPixelValue;
+                    if ((rangePoints.length == 2) || (rangePoints.length > 2 && pointInRange(x, y))) {
+                        grayscaleArray[y][x] = new Color(OriginImg.getRGB(x, y)).getRed();
+                        int newPixelValue = threshold(thrValue, grayscaleArray[y][x]);
+                        grayscaleArray[y][x] = newPixelValue;
+                    } else {
+                        grayscaleArray[y][x] = (255 << 24) | (0);
+                    }
                 } else {
                     grayscaleArray[y][x] = (255 << 24) | (0);
                 }
@@ -102,19 +136,19 @@ public class Helper {
         maxWidth = 0;
         minHeight = 99999;
         minWidth = 99999;
-
+        rangePoints = new int[rectangle.length][2];
         for (int i = 0; i < rectangle.length; i++) {
             maxHeight = Math.max(maxHeight, rectangle[i][1]);
             maxWidth = Math.max(maxWidth, rectangle[i][0]);
             minHeight = Math.min(minHeight, rectangle[i][1]);
             minWidth = Math.min(minWidth, rectangle[i][0]);
-            System.out.println(rectangle[i][0]+" "+rectangle[i][1]);
+            rangePoints[i][0] = rectangle[i][0];
+            rangePoints[i][1] = rectangle[i][1];
         }
 
-        System.out.println(maxHeight+" "+minHeight);
-        System.out.println(maxWidth+" "+minWidth);
         getGreyImageFromInput(img);
         thresholdImg(thresholdValue);
+        drawImg();
         int largestIndex = labelComponents();
         getLargestComponent(largestIndex);
         dilate();
@@ -517,12 +551,44 @@ public class Helper {
         width = OriginImg.getWidth();
         height = OriginImg.getHeight();
         grayscaleArray = new int[height][width];
+        maxHeight = 0;
+        maxWidth = 0;
+        minHeight = 99999;
+        minWidth = 99999;
+        for (int i = 0; i < rangePoints.length; i++) {
+            maxHeight = Math.max(maxHeight, rangePoints[i][1]);
+            maxWidth = Math.max(maxWidth, rangePoints[i][0]);
+            minHeight = Math.min(minHeight, rangePoints[i][1]);
+            minWidth = Math.min(minWidth, rangePoints[i][0]);
+        }
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                grayscaleArray[y][x] = new Color(OriginImg.getRGB(x, y)).getRed();
-                int newPixelValue = threshold(thrValue, grayscaleArray[y][x]);
-                grayscaleArray[y][x] = newPixelValue;
+                if (y >= minHeight && y <= maxHeight && x >= minWidth && x <= maxWidth) {
+                    if ((rangePoints.length == 2) || (rangePoints.length > 2 && pointInRange(x, y))) {
+                        grayscaleArray[y][x] = new Color(OriginImg.getRGB(x, y)).getRed();
+//                        int[]nineNeighbours=new int[]{
+//                                new Color(OriginImg.getRGB(x, y)).getRed(),
+//                                new Color(OriginImg.getRGB(x+1, y)).getRed(),
+//                                new Color(OriginImg.getRGB(x, y+1)).getRed(),
+//                                new Color(OriginImg.getRGB(x-1, y)).getRed(),
+//                                new Color(OriginImg.getRGB(x, y-1)).getRed(),
+//                                new Color(OriginImg.getRGB(x+1, y+1)).getRed(),
+//                                new Color(OriginImg.getRGB(x-1, y-1)).getRed(),
+//                                new Color(OriginImg.getRGB(x+1, y-1)).getRed(),
+//                                new Color(OriginImg.getRGB(x-1, y+1)).getRed()};
+//                        Arrays.sort(nineNeighbours);
+//                        if(grayscaleArray[y][x]>nineNeighbours[8]){
+//                            grayscaleArray[y][x]+=54;
+//                        }
+                        int newPixelValue = threshold(thrValue, grayscaleArray[y][x]);
+                        grayscaleArray[y][x] = newPixelValue;
+                    } else {
+                        grayscaleArray[y][x] = (255 << 24) | (0);
+                    }
+                } else {
+                    grayscaleArray[y][x] = (255 << 24) | (0);
+                }
             }
         }
     }

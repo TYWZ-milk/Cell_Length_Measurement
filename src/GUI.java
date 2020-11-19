@@ -236,7 +236,6 @@ public class GUI extends JFrame {
         RectImg.drawOval(me.getX(), me.getY(), 3, 3);
         RectImg.dispose();
         imageLabel.setIcon(new ImageIcon(drewImg));
-
         rangePoints.add(new int[]{me.getX(),me.getY()});
 
     }
