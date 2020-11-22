@@ -31,26 +31,16 @@ public class Helper {
 
     public static void main(String[] args) {
 
-        easy24708_1_1();
+//        easy24708_1_1();
 //        easy24708_1_2();
-//        easy24708_1_3();
+        easy24708_1_3();
     }
 
     private static void easy24708_1_3() {
-        getGreyImage("src/input/24708_1_3.jpg", 160);
-        int largestIndex = labelComponents();
-        getLargestComponent(largestIndex);
-        drawImg();
-//        buildCC();
-//        thin(new double[]{70.0, 1});
-    }
-
-    private static void easy24708_1_2() {
-        getGreyImage("src/input/24708_1_2.jpg", 164);
-        int largestIndex = labelComponents();
-        getLargestComponent(largestIndex);
-
-        dilate();
+        rangePoints = new int[][]{{1792, 520}, {580, 1672}};
+        getGreyImage("src/input/24708_1_3.jpg", 180);
+        ArrayList<Integer> largestIndex = labelComponents();
+        getLargestComponents(largestIndex);
         dilate();
         dilate();
         dilate();
@@ -59,21 +49,35 @@ public class Helper {
         thin(new double[]{70.0, 1});
     }
 
-    private static void easy24708_1_1() {
-//430 132
-//128 286
-        rangePoints=new int[][]{{1720,528},{512,1144}};
-        getGreyImage("src/input/24708.jpg", 189);
+    private static void easy24708_1_2() {
+        getGreyImage("src/input/24708_1_2.jpg", 164);
+        ArrayList<Integer> largestIndex = labelComponents();
+        getLargestComponents(largestIndex);
         drawImg();
-        int largestIndex = labelComponents();
-        getLargestComponent(largestIndex);
-
+//        dilate();
 //        dilate();
 //        dilate();
 //        dilate();
 //        erode();
 //        buildCC();
-//        thin(new double[]{19.0, 0.2});
+//        thin(new double[]{70.0, 1});
+    }
+
+    private static void easy24708_1_1() {
+//430 132
+//128 286
+        rangePoints=new int[][]{{1720,528},{512,1144}};
+        getGreyImage("src/input/24708.jpg", 165);
+
+        ArrayList<Integer> largestIndex = labelComponents();
+        getLargestComponents(largestIndex);
+        dilate();
+        dilate();
+        dilate();
+        erode();
+        buildCC();
+        thin(new double[]{110.0, 1.0});
+
     }
 
     private static void getGreyImageFromInput(BufferedImage img) {
@@ -102,7 +106,7 @@ public class Helper {
                 point2[1] = rangePoints[i + 1][1];
             }
 
-            double slope = ((double) (point2[1] - point1[1])) /((double) (point2[0] - point1[0]));
+            double slope = ((double) (point2[1] - point1[1])) / ((double) (point2[0] - point1[0]));
             boolean condition1 = (point1[0] <= x) && (x < point2[0]);
             boolean condition2 = (point2[0] <= x) && (x < point1[0]);
             boolean above = (y < slope * (x - point1[0]) + point1[1]);
@@ -112,26 +116,35 @@ public class Helper {
         return crossTimes % 2 != 0;
     }
 
-    private static void thresholdImg(int thrValue) {
+    private static void thresholdImg() {
+
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                if (y >= minHeight && y <= maxHeight && x >= minWidth && x <= maxWidth) {
-                    if ((rangePoints.length == 2) || (rangePoints.length > 2 && pointInRange(x, y))) {
-                        grayscaleArray[y][x] = new Color(OriginImg.getRGB(x, y)).getRed();
-                        int newPixelValue = threshold(thrValue, grayscaleArray[y][x]);
-                        grayscaleArray[y][x] = newPixelValue;
-                    } else {
-                        grayscaleArray[y][x] = (255 << 24) | (0);
-                    }
-                } else {
-                    grayscaleArray[y][x] = (255 << 24) | (0);
-                }
-
+                grayscaleArray[y][x] = new Color(OriginImg.getRGB(x, y)).getRed();
             }
         }
+
+        adaptiveThreshold();
+
+//        for (int y = 0; y < height; y++) {
+//            for (int x = 0; x < width; x++) {
+//                if (y >= minHeight && y <= maxHeight && x >= minWidth && x <= maxWidth) {
+//                    if ((rangePoints.length == 2) || (rangePoints.length > 2 && pointInRange(x, y))) {
+//                        grayscaleArray[y][x] = new Color(OriginImg.getRGB(x, y)).getRed();
+//                        int newPixelValue = threshold(thrValue, grayscaleArray[y][x]);
+//                        grayscaleArray[y][x] = newPixelValue;
+//                    } else {
+//                        grayscaleArray[y][x] = (255 << 24) | (0);
+//                    }
+//                } else {
+//                    grayscaleArray[y][x] = (255 << 24) | (0);
+//                }
+//
+//            }
+//        }
     }
 
-    public ArrayList<double[]> processImg(BufferedImage img, int[][] rectangle, int thresholdValue) {
+    public ArrayList<double[]> processImg(BufferedImage img, int[][] rectangle) {
         maxHeight = 0;
         maxWidth = 0;
         minHeight = 99999;
@@ -147,10 +160,9 @@ public class Helper {
         }
 
         getGreyImageFromInput(img);
-        thresholdImg(thresholdValue);
-        drawImg();
-        int largestIndex = labelComponents();
-        getLargestComponent(largestIndex);
+        thresholdImg();
+        ArrayList<Integer> largestIndex = labelComponents();
+        getLargestComponents(largestIndex);
         dilate();
         dilate();
         dilate();
@@ -440,17 +452,6 @@ public class Helper {
     private static void drawCC2D() {
         Graphics2D g = processedImg.createGraphics();
         g.setColor(Color.GREEN);
-//        g.fillRect(0,0,12,12);
-//        BasicStroke bs = new BasicStroke(5);
-//        g.setStroke(bs);
-//        for (int i = 0; i < cell1List.size(); i++) {
-//
-//            double y1 = (cell0List.get(cell1List.get(i)[0] - 1)[0]);
-//            double x1 = (cell0List.get(cell1List.get(i)[0] - 1)[1]);
-//            double y2 = (cell0List.get(cell1List.get(i)[1] - 1)[0]);
-//            double x2 = (cell0List.get(cell1List.get(i)[1] - 1)[1]);
-//            g.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
-//        }
 
         for (int i = 0; i < cell0List.size(); i++) {
             double y1 = cell0List.get(i)[0];
@@ -473,10 +474,10 @@ public class Helper {
         writeFile();
     }
 
-    private static void getLargestComponent(int largestIndex) {
+    private static void getLargestComponents(ArrayList<Integer> largestIndex) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                if (labeledGrayscaleArray[y][x] == largestIndex) {
+                if (largestIndex.contains( labeledGrayscaleArray[y][x])) {
                     grayscaleArray[y][x] = 1;
                 } else {
                     grayscaleArray[y][x] = 0;
@@ -485,14 +486,14 @@ public class Helper {
         }
     }
 
-    private static int labelComponents() {
+    private static ArrayList<Integer>  labelComponents() {
         int index = 1;
         int largestComponentIndex = 0;
         int maxElements = 0;
         ArrayList<Integer> indexElementsMap = new ArrayList<>();
         labeledGrayscaleArray = new int[height][width];
-        int[][] fourConn = {{-1, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}};
-//        int[][] fourConn = { {-1, 0},  {0, 1}, {1, 0},  {0, -1}};
+//        int[][] fourConn = {{-1, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}};
+        int[][] fourConn = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 if (grayscaleArray[y][x] == -1 && labeledGrayscaleArray[y][x] == 0) {
@@ -502,7 +503,7 @@ public class Helper {
                     labeledGrayscaleArray[y][x] = index;
                     while (queue.size() > 0) {
                         int[] popedPos = queue.poll();
-                        for (int i = 0; i < 8; i++) {
+                        for (int i = 0; i < 4; i++) {
                             int newy = popedPos[0] + fourConn[i][0];
                             int newx = popedPos[1] + fourConn[i][1];
                             if (newx >= 0 && newx < width && newy >= 0 && newy < height &&
@@ -517,7 +518,7 @@ public class Helper {
                         largestComponentIndex = index;
                         maxElements = elements;
                     }
-                    if (elements > 10000) {
+                    if (elements > 1000) {
                         indexElementsMap.add(index);
                     }
                     index += 1;
@@ -525,7 +526,8 @@ public class Helper {
             }
         }
 //        return indexElementsMap.get(1);
-        return largestComponentIndex;
+//        return largestComponentIndex;
+        return indexElementsMap;
     }
 
     private static int threshold(int thrValue, int grayscaleValue) {
@@ -564,33 +566,28 @@ public class Helper {
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                if (y >= minHeight && y <= maxHeight && x >= minWidth && x <= maxWidth) {
-                    if ((rangePoints.length == 2) || (rangePoints.length > 2 && pointInRange(x, y))) {
-                        grayscaleArray[y][x] = new Color(OriginImg.getRGB(x, y)).getRed();
-//                        int[]nineNeighbours=new int[]{
-//                                new Color(OriginImg.getRGB(x, y)).getRed(),
-//                                new Color(OriginImg.getRGB(x+1, y)).getRed(),
-//                                new Color(OriginImg.getRGB(x, y+1)).getRed(),
-//                                new Color(OriginImg.getRGB(x-1, y)).getRed(),
-//                                new Color(OriginImg.getRGB(x, y-1)).getRed(),
-//                                new Color(OriginImg.getRGB(x+1, y+1)).getRed(),
-//                                new Color(OriginImg.getRGB(x-1, y-1)).getRed(),
-//                                new Color(OriginImg.getRGB(x+1, y-1)).getRed(),
-//                                new Color(OriginImg.getRGB(x-1, y+1)).getRed()};
-//                        Arrays.sort(nineNeighbours);
-//                        if(grayscaleArray[y][x]>nineNeighbours[8]){
-//                            grayscaleArray[y][x]+=54;
-//                        }
-                        int newPixelValue = threshold(thrValue, grayscaleArray[y][x]);
-                        grayscaleArray[y][x] = newPixelValue;
-                    } else {
-                        grayscaleArray[y][x] = (255 << 24) | (0);
-                    }
-                } else {
-                    grayscaleArray[y][x] = (255 << 24) | (0);
-                }
+                grayscaleArray[y][x] = new Color(OriginImg.getRGB(x, y)).getRed();
             }
         }
+
+        adaptiveThreshold();
+//
+//        increaseBrightnes();
+//        for (int y = 0; y < height; y++) {
+//            for (int x = 0; x < width; x++) {
+//                if (y >= minHeight && y <= maxHeight && x >= minWidth && x <= maxWidth) {
+//                    if ((rangePoints.length == 2) || (rangePoints.length > 2 && pointInRange(x, y))) {
+//                        grayscaleArray[y][x] = new Color(OriginImg.getRGB(x, y)).getRed();
+//                        int newPixelValue = threshold(thrValue, grayscaleArray[y][x]);
+//                        grayscaleArray[y][x] = newPixelValue;
+//                    } else {
+//                        grayscaleArray[y][x] = (255 << 24) | (0);
+//                    }
+//                } else {
+//                    grayscaleArray[y][x] = (255 << 24) | (0);
+//                }
+//            }
+
     }
 
     private static void writeFile() {
@@ -602,4 +599,93 @@ public class Helper {
             System.out.println(e);
         }
     }
+
+
+    //Other's method
+
+//https://github.com/yusufshakeel/Java-Image-Processing-Project/blob/master/src/imageFX/Threshold.java
+    private static void adaptiveThreshold() {
+        int[][] newImg = new int[height][width];
+        for (int y = 1; y < height - 1; y++) {
+            for (int x = 1; x < width - 1; x++) {
+                if (y >= minHeight && y <= maxHeight && x >= minWidth && x <= maxWidth &&
+                        ((rangePoints.length == 2) || (rangePoints.length > 2 && pointInRange(x, y)))) {
+                    int sum = 0, count = 0;
+                    for (int i = -5; i <= 5; i++) {
+                        if (x + i >= width) break;
+                        if (x + i < 0) continue;
+                        for (int j = -5; j <= 5; j++) {
+                            if (y + j >= height) break;
+                            if (y + j < 0) continue;
+                            sum += grayscaleArray[y + i][x + j];
+                            count++;
+                        }
+                    }
+                    if (grayscaleArray[y][x] * count > sum)
+                        newImg[y][x] = (255 << 24) | (255 << 16) | (255 << 8) | 255;
+                    else
+                        newImg[y][x] = (255 << 24) | (0);
+
+                } else {
+                    newImg[y][x] = (255 << 24) | (0);
+                }
+            }
+        }
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                grayscaleArray[y][x] = newImg[y][x];
+            }
+        }
+    }
+
+//    public static BufferedImage changeBrightness(BufferedImage bi,int mean, int stddev,double factor) {
+//        int w = bi.getWidth(),h = bi.getHeight();
+//        BufferedImage res = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
+//        for (int i=0;i<w;i++) {
+//            for (int j=0;j<h;j++) {
+//                int v = new Color(bi.getRGB(i,j)).getRed();
+//                v=(int)(mean+(v-mean)*factor);
+//                v=Math.max(Math.min(v,255),0);
+//                res.setRGB(i,j,new Color(v,v,v).getRGB());
+//            }
+//        }
+//        return res;
+//    }
+//
+//    public static int averageBrightness;
+//    public static double getStdDevBrightness() {
+//        double res=0;
+//        for (int i=0;i<width;i++) {
+//            for (int j=0;j<height;j++) {
+//                int c=grayscaleArray[i][j];
+//                res+=(averageBrightness-c)*(averageBrightness-c);
+//            }
+//        }
+//        return Math.sqrt(res/width/height);
+//    }
+//
+//    public static int getAvgBrightness() {
+//        int res=0;
+//        for (int i=0;i<width;i++) {
+//            int sum=0;
+//            for (int j=0;j<height;j++) {
+//                sum+=grayscaleArray[i][j];
+//            }
+//            res+=sum/height;
+//        }
+//        return res/width;
+//    }
+//
+//    private static void increaseBrightnes(){
+//        averageBrightness=getAvgBrightness();
+//        double dev= getStdDevBrightness();
+//
+//        OriginImg=changeBrightness(OriginImg,averageBrightness,(int)dev,1.5);
+//        try {
+//
+//            File outputfile = new File("saved.png");
+//            ImageIO.write(OriginImg, "png", outputfile);
+//        } catch (IOException e) {
+//        }
+//    }
 }

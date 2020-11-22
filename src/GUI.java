@@ -130,7 +130,7 @@ public class GUI extends JFrame {
                     quadrupleRangePoints[i]=new int[]{rangePoints.get(i)[0]*4,rangePoints.get(i)[1]*4};
                 }
                 Helper helper = new Helper();
-                ArrayList<double[]> result = helper.processImg(originImg, quadrupleRangePoints, Integer.parseInt(thresholdField.getText()));
+                ArrayList<double[]> result = helper.processImg(originImg, quadrupleRangePoints);
                 textLength.setText("The Sperm Length: " + (int) (result.size() / 3.06) + " micrometers");
                 RectImg = drewImg.createGraphics();
                 RectImg.setColor(Color.BLUE);
@@ -150,8 +150,8 @@ public class GUI extends JFrame {
         add(textDrawRange);
         add(textUpload);
         add(drawPolyBtn);
-        add(textInputThreshold);
-        add(thresholdField);
+//        add(textInputThreshold);
+//        add(thresholdField);
         add(runBtn);
         add(drawRectBtn);
         add(uploadBtn);
