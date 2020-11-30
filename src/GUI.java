@@ -131,7 +131,7 @@ public class GUI extends JFrame {
                 }
                 Helper helper = new Helper();
                 ArrayList<double[]> result = helper.processImg(originImg, quadrupleRangePoints);
-                textLength.setText("The Sperm Length: " + (int) (result.size() / 3.06) + " micrometers");
+                textLength.setText("The Sperm Length: " + (int) (result.size() / 3.6) + " micrometers");
                 RectImg = drewImg.createGraphics();
                 RectImg.setColor(Color.BLUE);
                 for (int i = 0; i < result.size(); i++) {

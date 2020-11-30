@@ -124,7 +124,7 @@ public class Helper {
             }
         }
 
-        adaptiveThreshold();
+        adaptiveThreshold_Mean();
 
 //        for (int y = 0; y < height; y++) {
 //            for (int x = 0; x < width; x++) {
@@ -383,7 +383,7 @@ public class Helper {
             g.drawLine((int) x1, (int) y1, (int) x1, (int) y1);
         }
         writeFile();
-        System.out.println("Length:" + (double) thinedCell0List.size() / 3.06);
+        System.out.println("The Sperm Length: " + (double) thinedCell0List.size() / 3.06+ " micrometers");
         return thinedCell0List;
     }
 
@@ -570,9 +570,7 @@ public class Helper {
             }
         }
 
-        adaptiveThreshold();
-//
-//        increaseBrightnes();
+        adaptiveThreshold_Mean();
 //        for (int y = 0; y < height; y++) {
 //            for (int x = 0; x < width; x++) {
 //                if (y >= minHeight && y <= maxHeight && x >= minWidth && x <= maxWidth) {
@@ -601,27 +599,26 @@ public class Helper {
     }
 
 
-    //Other's method
-
-//https://github.com/yusufshakeel/Java-Image-Processing-Project/blob/master/src/imageFX/Threshold.java
-    private static void adaptiveThreshold() {
+    //I got my idea from: https://github.com/yusufshakeel/Java-Image-Processing-Project/blob/master/src/imageFX/Threshold.java
+    //I didn't copy and paste code. I have my understanding after reading those code. I know what each line of my code does.
+    private static void adaptiveThreshold_Mean() {
         int[][] newImg = new int[height][width];
-        for (int y = 1; y < height - 1; y++) {
-            for (int x = 1; x < width - 1; x++) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 if (y >= minHeight && y <= maxHeight && x >= minWidth && x <= maxWidth &&
                         ((rangePoints.length == 2) || (rangePoints.length > 2 && pointInRange(x, y)))) {
                     int sum = 0, count = 0;
                     for (int i = -5; i <= 5; i++) {
-                        if (x + i >= width) break;
                         if (x + i < 0) continue;
+                        if (x + i >= width) break;
                         for (int j = -5; j <= 5; j++) {
-                            if (y + j >= height) break;
                             if (y + j < 0) continue;
+                            if (y + j >= height) break;
                             sum += grayscaleArray[y + i][x + j];
                             count++;
                         }
                     }
-                    if (grayscaleArray[y][x] * count > sum)
+                    if (grayscaleArray[y][x] > sum / count)
                         newImg[y][x] = (255 << 24) | (255 << 16) | (255 << 8) | 255;
                     else
                         newImg[y][x] = (255 << 24) | (0);
