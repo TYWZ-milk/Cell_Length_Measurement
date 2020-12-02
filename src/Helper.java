@@ -33,7 +33,22 @@ public class Helper {
 
 //        easy24708_1_1();
 //        easy24708_1_2();
-        easy24708_1_3();
+//        easy24708_1_3();
+        medium24708_1_6();
+    }
+
+    private static void medium24708_1_6() {
+        rangePoints = new int[][]{{1792, 520}, {580, 1672}};
+        getGreyImage("src/input/24708.1_6 at 20X.jpg", 180);
+        ArrayList<Integer> largestIndex = labelComponents();
+        getLargestComponents(largestIndex);
+        drawImg();
+//        dilate();
+//        dilate();
+//        dilate();
+//        erode();
+//        buildCC();
+//        thin(new double[]{70.0, 1});
     }
 
     private static void easy24708_1_3() {
@@ -66,7 +81,7 @@ public class Helper {
     private static void easy24708_1_1() {
 //430 132
 //128 286
-        rangePoints=new int[][]{{1720,528},{512,1144}};
+        rangePoints = new int[][]{{1720, 528}, {512, 1144}};
         getGreyImage("src/input/24708.jpg", 165);
 
         ArrayList<Integer> largestIndex = labelComponents();
@@ -383,7 +398,7 @@ public class Helper {
             g.drawLine((int) x1, (int) y1, (int) x1, (int) y1);
         }
         writeFile();
-        System.out.println("The Sperm Length: " + (double) thinedCell0List.size() / 3.06+ " micrometers");
+        System.out.println("The Sperm Length: " + (double) thinedCell0List.size() / 3.06 + " micrometers");
         return thinedCell0List;
     }
 
@@ -477,7 +492,7 @@ public class Helper {
     private static void getLargestComponents(ArrayList<Integer> largestIndex) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                if (largestIndex.contains( labeledGrayscaleArray[y][x])) {
+                if (largestIndex.contains(labeledGrayscaleArray[y][x])) {
                     grayscaleArray[y][x] = 1;
                 } else {
                     grayscaleArray[y][x] = 0;
@@ -486,7 +501,7 @@ public class Helper {
         }
     }
 
-    private static ArrayList<Integer>  labelComponents() {
+    private static ArrayList<Integer> labelComponents() {
         int index = 1;
         int largestComponentIndex = 0;
         int maxElements = 0;
@@ -518,7 +533,7 @@ public class Helper {
                         largestComponentIndex = index;
                         maxElements = elements;
                     }
-                    if (elements > 1000) {
+                    if (elements > 300) {
                         indexElementsMap.add(index);
                     }
                     index += 1;
@@ -571,6 +586,7 @@ public class Helper {
         }
 
         adaptiveThreshold_Mean();
+
 //        for (int y = 0; y < height; y++) {
 //            for (int x = 0; x < width; x++) {
 //                if (y >= minHeight && y <= maxHeight && x >= minWidth && x <= maxWidth) {
@@ -599,7 +615,7 @@ public class Helper {
     }
 
 
-    //I got my idea from: https://github.com/yusufshakeel/Java-Image-Processing-Project/blob/master/src/imageFX/Threshold.java
+    //I got my idea from: https://docs.opencv.org/master/d7/d4d/tutorial_py_thresholding.html
     //I didn't copy and paste code. I have my understanding after reading those code. I know what each line of my code does.
     private static void adaptiveThreshold_Mean() {
         int[][] newImg = new int[height][width];
@@ -634,55 +650,4 @@ public class Helper {
             }
         }
     }
-
-//    public static BufferedImage changeBrightness(BufferedImage bi,int mean, int stddev,double factor) {
-//        int w = bi.getWidth(),h = bi.getHeight();
-//        BufferedImage res = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
-//        for (int i=0;i<w;i++) {
-//            for (int j=0;j<h;j++) {
-//                int v = new Color(bi.getRGB(i,j)).getRed();
-//                v=(int)(mean+(v-mean)*factor);
-//                v=Math.max(Math.min(v,255),0);
-//                res.setRGB(i,j,new Color(v,v,v).getRGB());
-//            }
-//        }
-//        return res;
-//    }
-//
-//    public static int averageBrightness;
-//    public static double getStdDevBrightness() {
-//        double res=0;
-//        for (int i=0;i<width;i++) {
-//            for (int j=0;j<height;j++) {
-//                int c=grayscaleArray[i][j];
-//                res+=(averageBrightness-c)*(averageBrightness-c);
-//            }
-//        }
-//        return Math.sqrt(res/width/height);
-//    }
-//
-//    public static int getAvgBrightness() {
-//        int res=0;
-//        for (int i=0;i<width;i++) {
-//            int sum=0;
-//            for (int j=0;j<height;j++) {
-//                sum+=grayscaleArray[i][j];
-//            }
-//            res+=sum/height;
-//        }
-//        return res/width;
-//    }
-//
-//    private static void increaseBrightnes(){
-//        averageBrightness=getAvgBrightness();
-//        double dev= getStdDevBrightness();
-//
-//        OriginImg=changeBrightness(OriginImg,averageBrightness,(int)dev,1.5);
-//        try {
-//
-//            File outputfile = new File("saved.png");
-//            ImageIO.write(OriginImg, "png", outputfile);
-//        } catch (IOException e) {
-//        }
-//    }
 }
