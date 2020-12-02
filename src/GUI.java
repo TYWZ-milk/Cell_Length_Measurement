@@ -56,6 +56,15 @@ public class GUI extends JFrame {
             }
         });
 
+        //undo button
+        JButton undoBtn = new JButton("Undo");
+        undoBtn.setBounds(50, 420, 140, 40);
+        undoBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                undo();
+            }
+        });
+
         //text step1
         JLabel textUpload = new JLabel("Step1: Upload your image");
         textUpload.setVisible(true);
@@ -151,6 +160,7 @@ public class GUI extends JFrame {
         add(textDrawRange);
         add(textUpload);
         add(drawPolyBtn);
+        add(undoBtn);
 //        add(textInputThreshold);
 //        add(thresholdField);
         add(runBtn);
@@ -160,6 +170,21 @@ public class GUI extends JFrame {
         add(textLength);
         setSize(1000, 800);
         setVisible(true);
+    }
+
+
+    private void undo(){
+        if(rangePoints.size()>0) {
+            rangePoints.remove(rangePoints.size() - 1);
+            onClickErase();
+            RectImg = drewImg.createGraphics();
+            RectImg.setColor(Color.RED);
+            for (int i = 0; i < rangePoints.size(); i++) {
+                RectImg.drawOval(rangePoints.get(i)[0], rangePoints.get(i)[1], 3, 3);
+            }
+            RectImg.dispose();
+            imageLabel.setIcon(new ImageIcon(drewImg));
+        }
     }
 
     private void completeDrawing() {
@@ -196,12 +221,12 @@ public class GUI extends JFrame {
 
     }
 
-    //get this function from: https://stackoverflow.com/questions/3514158/how-do-you-clone-a-bufferedimage
-    public static BufferedImage deepCopy(BufferedImage bi) {
-        ColorModel cm = bi.getColorModel();
-        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-        WritableRaster raster = bi.copyData(null);
-        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+    //I learned how to deep copy bufferedImage from: https://stackoverflow.com/questions/3514158/how-do-you-clone-a-bufferedimage
+    public static BufferedImage deepCopy(BufferedImage originImg) {
+        ColorModel colorModel = originImg.getColorModel();
+        boolean isAlphaPremultiplied = colorModel.isAlphaPremultiplied();
+        WritableRaster writableRaster = originImg.copyData(null);
+        return new BufferedImage(colorModel, writableRaster, isAlphaPremultiplied, null);
     }
 
     private void onClickUpload(JFileChooser fc) {
