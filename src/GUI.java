@@ -46,6 +46,11 @@ public class GUI extends JFrame {
         textLength.setVisible(true);
         textLength.setBounds(400, 550, 300, 40);
 
+        //Image name
+        JLabel imgName = new JLabel("Image: ");
+        imgName.setVisible(true);
+        imgName.setBounds(500, 20, 300, 40);
+
         //erase button
         JButton eraseBtn = new JButton("Erase");
         eraseBtn.setBounds(50, 500, 140, 40);
@@ -75,7 +80,7 @@ public class GUI extends JFrame {
         uploadBtn.setBounds(50, 100, 140, 40);
         uploadBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onClickUpload(fc);
+                onClickUpload(fc,imgName);
             }
         });
 
@@ -141,7 +146,7 @@ public class GUI extends JFrame {
                 }
                 Helper helper = new Helper();
                 ArrayList<double[]> result = helper.processImg(originImg, quadrupleRangePoints);
-                textLength.setText("The Sperm Length: " + (int) (result.size() / 3.6) + " micrometers");
+                textLength.setText("The Sperm Length: " + (int) (result.size() *Math.sqrt(2) / (3.06)) + " micrometers");
                 RectImg = drewImg.createGraphics();
                 RectImg.setColor(Color.BLUE);
                 for (int i = 0; i < result.size(); i++) {
@@ -161,6 +166,7 @@ public class GUI extends JFrame {
         add(textUpload);
         add(drawPolyBtn);
         add(undoBtn);
+        add(imgName);
 //        add(textInputThreshold);
 //        add(thresholdField);
         add(runBtn);
@@ -229,7 +235,7 @@ public class GUI extends JFrame {
         return new BufferedImage(colorModel, writableRaster, isAlphaPremultiplied, null);
     }
 
-    private void onClickUpload(JFileChooser fc) {
+    private void onClickUpload(JFileChooser fc,JLabel imgName) {
         int returnVal = fc.showOpenDialog(null);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -250,7 +256,7 @@ public class GUI extends JFrame {
             pack();
             setSize(1000, 800);
 
-
+            imgName.setText("Image: "+ file.getName() );
             System.out.println("Opening: " + file.getName() + ".");
         }
     }

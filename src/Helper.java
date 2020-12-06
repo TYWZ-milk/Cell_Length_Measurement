@@ -31,10 +31,10 @@ public class Helper {
 
     public static void main(String[] args) {
 
-//        easy24708_1_1();
+        easy24708_1_1();
 //        easy24708_1_2();
 //        easy24708_1_3();
-        medium24708_1_6();
+//        medium24708_1_6();
     }
 
     private static void medium24708_1_6() {
@@ -42,13 +42,13 @@ public class Helper {
         getGreyImage("src/input/24708.1_6 at 20X.jpg", 180);
         ArrayList<Integer> largestIndex = labelComponents();
         getLargestComponents(largestIndex);
+        dilate();
+        dilate();
+        dilate();
+        erode();
         drawImg();
-//        dilate();
-//        dilate();
-//        dilate();
-//        erode();
-//        buildCC();
-//        thin(new double[]{70.0, 1});
+        buildCC();
+        thin(new double[]{10.0, 0.1});
     }
 
     private static void easy24708_1_3() {
@@ -183,7 +183,7 @@ public class Helper {
         dilate();
         erode();
         buildCC();
-        return thin(new double[]{19.0, 0.2});
+        return thin(new double[]{10.0, 0.1});
     }
 
     private static int calThreshold() {
@@ -390,6 +390,7 @@ public class Helper {
                 thinedCell2List.add(cell2List.get(i));
             }
         }
+        thinedCell0List = processFinalResult(thinedCell0List);
         Graphics2D g = processedImg.createGraphics();
         g.setColor(Color.BLUE);
         for (int i = 0; i < thinedCell0List.size(); i++) {
@@ -398,8 +399,48 @@ public class Helper {
             g.drawLine((int) x1, (int) y1, (int) x1, (int) y1);
         }
         writeFile();
-        System.out.println("The Sperm Length: " + (double) thinedCell0List.size() / 3.06 + " micrometers");
+        System.out.println("The Sperm Length: " + (double) thinedCell0List.size() *Math.sqrt(2)/ 3.06 + " micrometers");
         return thinedCell0List;
+    }
+
+    private static ArrayList<double[]> processFinalResult(ArrayList<double[]> thinedList) {
+        ArrayList<double[]> finalRes = new ArrayList<>();
+        int[][] eightConn = {{-1, -1}, {1, 1}, {-1, 0}, {1, 0}, {-1, 1}, {1, -1}, {0, 1}, {0, -1}};
+        boolean[][] matrix = new boolean[width][height];
+        for (int i = 0; i < thinedList.size(); i++) {
+            int x = (int) thinedList.get(i)[0];
+            int y = (int) thinedList.get(i)[1];
+            matrix[x][y] = true;
+        }
+        for (int i = 0; i < width; i++) {
+            for( int k = 0;k<height;k++) {
+                if(matrix[i][k]) {
+                    ArrayList<int[]> neighbors = new ArrayList<>();
+                    for (int j = 0; j < 8; j++) {
+                        int newx = eightConn[j][0] + i;
+                        int newy = eightConn[j][1] + k;
+                        if (matrix[newx][newy]) {
+                            neighbors.add(new int[]{newx, newy});
+                        }
+                    }
+                    if (neighbors.size() > 2) {
+                        for (int j = 0; j < neighbors.size() - 2; j++) {
+                            matrix[neighbors.get(j)[0]][neighbors.get(j)[1]] = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < width; i++) {
+            for( int k = 0;k<height;k++) {
+                if(matrix[i][k]){
+                    finalRes.add(new double[]{i,k});
+                }
+            }
+        }
+
+        return finalRes;
     }
 
     private static void countSimplePairs() {
@@ -533,7 +574,7 @@ public class Helper {
                         largestComponentIndex = index;
                         maxElements = elements;
                     }
-                    if (elements > 300) {
+                    if (elements > 400) {
                         indexElementsMap.add(index);
                     }
                     index += 1;
