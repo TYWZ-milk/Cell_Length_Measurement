@@ -96,7 +96,7 @@ The most significant coding component is `Adaptive threshold by mean value` and 
 In order to process the image, the first step is always threshold the image. At first, my threshold algorithm is what I learned from the class. But it didn't work for some images. These images are unevenly distributed in brightness. If I set a low value as the threshold value for all pixels, then bright areas will have a lot of noise. 
 If I set a high value as the threshold value for all pixels, then we can't see any result in dark areas.
 
-24708.1_3 at 20X.jpg:
+Example: 24708.1_3 at 20X.jpg
 
 Threshold value: 155
 
@@ -105,3 +105,27 @@ Threshold value: 155
 Threshold value: 180
 
 ![24708_1_3_thrvalue_180.jpg](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/24708_1_3_thrvalue_180.jpg)
+
+Therefore, I can't use the normal threshold algorithm. I noticed one important property of the cell. Whether in a bright area or a dark area, the pixel values of cell are always larger than the background.
+This means the pixel values of cell are always larger than the mean value of neighboring pixels. So I decided to use adaptive threshold by mean value.
+
+Here are steps of my adaptive threshold:
+1. Iterate all pixels.
+
+    a. Construct a 9x9 matrix centered on the current pixel.
+    
+    b. Calculate the mean value of all pixels inside this matrix.
+    
+    c. If the current pixel value is larger than the mean value, take it as the object. Otherwise, take it as the background.
+    
+    d. Iterate next pixel.
+    
+If we still use `24708.1_3 at 20X.jpg` as the input, the output is:
+
+![24708_1_3_adaptive_threshold.jpg](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/24708_1_3_adaptive_threshold.jpg)
+
+Now it's very clear to see the cell.
+
+The time complexity of this algorithm is O(mn). m is the width of the image, n is the height of the image.
+
+###  Process the outline of the final result

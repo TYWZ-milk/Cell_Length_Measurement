@@ -38,7 +38,7 @@ public class Helper {
     }
 
     private static void test(){
-        rangePoints = new int[][]{{0, 0}, {3000, 3000}};
+        rangePoints = new int[][]{{10, 10}, {2030, 2030}};
         getGreyImage("src/input/24708_1_3.jpg", 155);
         drawImg();
     }
