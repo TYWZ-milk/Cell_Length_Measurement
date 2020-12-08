@@ -168,3 +168,8 @@ After using my algorithm, the result in the same region is:
 ![after_optimize.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/after_optimize.png)
 
 I deleted most meaningless pixels. This one looks like a real cell. But I still need to continue to optimize the algorithm, because you can see that there are some places where it is broken.
+
+Let's use this algorithm on `24708.1_2 at 20X.jpg` again. We get a very perfect result. The deviation is less than 1%.
+
+![24708_1_2_best_Result.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/24708_1_2_best_Result.png)
+
