@@ -49,9 +49,9 @@ Measuring length of sperm cells of fruit flies.
      
     File Name | 24708.1_4 at 20X.jpg | 24708.1_5 at 20X.jpg | 24708.1_6 at 20X.jpg | WT.C.1_20x.jpg | WT.C.2_20x.jpg |
     --- | --- | --- | --- | --- | --- |
-My best result | 1678 | 2213 | 2587 | 978 | 2178 |
-Ground truth | 1681 | 1952 | 1991 | 1090 | 1847 |
-Deviation | -0.18% | 13.37% | 29.93% | -10.28% | 17.92% |
+    My best result | 1678 | 2213 | 2587 | 978 | 2178 |
+    Ground truth | 1681 | 1952 | 1991 | 1090 | 1847 |
+    Deviation | -0.18% | 13.37% | 29.93% | -10.28% | 17.92% |
 
    Deviations of most hard examples are below 20%. The best one is 6.17%. But there are three hard examples which don't have a good result. The results of those three images don't have good matches with original cells. And the lengths are too large. 
     
@@ -59,9 +59,9 @@ Deviation | -0.18% | 13.37% | 29.93% | -10.28% | 17.92% |
 
     File Name | 28369.2.6_2.jpg | 28369.2.6_3.jpg | 472.1A.1_5 | 472.1A.1_4 | LHM.1B.3_2&3 | LHM.1B.3_7 | 472.1B.1_5&6 | 53387.1B.2_7&8 | 472.1A.1_2.jpg | 42568.b4.7 | 472.1A.1_3 |
     --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | 
-My best result | 2000 | 2070 | 1680 | 1541 | 1733 | 1571 | 2061 | 2088 | bad result | bad result | bad result |
-Ground truth | 1798.116 | 1820.409 | 1827.506 | 1836.393 | 1847 | 1849.383 | 1870.82 | 1873.806 | 1721.22 | 1840.172 | 1849.996 |
-Deviation | 11.23% | 13.74% | -7.94% | -16.07% | -6.17% | -15.05% | 10.17% | 11.43% | N/A | N/A | N/A |
+    My best result | 2000 | 2070 | 1680 | 1541 | 1733 | 1571 | 2061 | 2088 | bad result | bad result | bad result |
+    Ground truth | 1798.116 | 1820.409 | 1827.506 | 1836.393 | 1847 | 1849.383 | 1870.82 | 1873.806 | 1721.22 | 1840.172 | 1849.996 |
+    Deviation | 11.23% | 13.74% | -7.94% | -16.07% | -6.17% | -15.05% | 10.17% | 11.43% | N/A | N/A | N/A |
 
 2. Users can draw points on images. They can use these points to build lines.
 
