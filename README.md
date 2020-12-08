@@ -100,8 +100,8 @@ If I set a high value as the threshold value for all pixels, then we can't see a
 
 Threshold value: 155
 
-![24708_1_3_thrvalue_155.jpg]()
+![24708_1_3_thrvalue_155.jpg](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/24708_1_3_thrvalue_155.jpg)
 
 Threshold value: 180
 
-![24708_1_3_thrvalue_180.jpg]()
+![24708_1_3_thrvalue_180.jpg](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/24708_1_3_thrvalue_180.jpg)
