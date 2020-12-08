@@ -30,9 +30,9 @@ public class Helper {
     private static int[][] rangePoints;
 
     public static void main(String[] args) {
-        test();
+//        test();
 //        easy24708_1_1();
-//        easy24708_1_2();
+        easy24708_1_2();
 //        easy24708_1_3();
 //        medium24708_1_6();
     }
@@ -71,17 +71,17 @@ public class Helper {
     }
 
     private static void easy24708_1_2() {
+        rangePoints = new int[][]{{1792, 520}, {580, 1672}};
         getGreyImage("src/input/24708_1_2.jpg", 164);
         ArrayList<Integer> largestIndex = labelComponents(2);
         getLargestComponents(largestIndex);
-        drawImg();
-//        dilate();
-//        dilate();
-//        dilate();
-//        dilate();
-//        erode();
-//        buildCC();
-//        thin(new double[]{70.0, 1});
+        dilate();
+        dilate();
+        dilate();
+        dilate();
+        erode();
+        buildCC();
+        thin(new double[]{70.0, 1});
     }
 
     private static void easy24708_1_1() {

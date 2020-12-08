@@ -129,3 +129,42 @@ Now it's very clear to see the cell.
 The time complexity of this algorithm is O(mn). m is the width of the image, n is the height of the image.
 
 ###  Process the outline of the final result
+After using the thin algorithm, my results were much larger than correct results.
+I used `n*Math.sqrt(2)/3.06, n is the number of piexls` to calculate the length of the cell.
+If we have too many pixels, this will affect our result.
+
+Let's see this example: 24708.1_2 at 20X.jpg.
+
+![24708.1_2_nooptimize.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/24708.1_2_nooptimize.png)
+
+The cell looks very good. But the length is 3052 micrometers and the ground truth is 1787. The deviation is 70.79%.
+If we zoom in, you will see something like this.
+
+![zoomin_noptimize.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/zoomin_noptimize.png)
+
+I drew some red circles on this image. I think these pixels can be deleted. 
+I think we still can build a good cell outline if most pixels only have 2 neighboring pixels.
+
+I drew some examples here:
+
+![examples_optimize.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/examples_optimize.png)
+
+Therefore, I think most pixels can be reduced to only have 2 neighboring pixels.
+
+The step of my algorithm is:
+1. Construct a boolean matrix for the image. The default value is false.
+2. Iterate the result from thin algorithm. For each position (x,y) in the result, matrix[x][y]=true.
+3. Iterate all pixels of image.
+    
+    a. If matrix[x][y]= false, skip this position.
+    
+    b. If matrix[x][y]= true, find all its neighboring pixels.
+    
+    c. If the number of neighboring pixels are larger than 2, I only save 2 neighboring pixels. For all rest neighboring pixels, set matrix[neighborx][neighbory] = false.
+4. Iterate the matrix, if matrix[x][y] = true, position (x,y) is part of our result. Otherwise, it's the background.
+
+After using my algorithm, the result in the same region is:
+
+![after_optimize.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/after_optimize.png)
+
+I deleted most meaningless pixels. This one looks like a real cell. But I still need to continue to optimize the algorithm, because you can see that there are some places where it is broken.
