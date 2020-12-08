@@ -40,7 +40,7 @@ public class Helper {
     private static void medium24708_1_6() {
         rangePoints = new int[][]{{1792, 520}, {580, 1672}};
         getGreyImage("src/input/24708.1_6 at 20X.jpg", 180);
-        ArrayList<Integer> largestIndex = labelComponents();
+        ArrayList<Integer> largestIndex = labelComponents(2);
         getLargestComponents(largestIndex);
         dilate();
         dilate();
@@ -54,7 +54,7 @@ public class Helper {
     private static void easy24708_1_3() {
         rangePoints = new int[][]{{1792, 520}, {580, 1672}};
         getGreyImage("src/input/24708_1_3.jpg", 180);
-        ArrayList<Integer> largestIndex = labelComponents();
+        ArrayList<Integer> largestIndex = labelComponents(2);
         getLargestComponents(largestIndex);
         dilate();
         dilate();
@@ -66,7 +66,7 @@ public class Helper {
 
     private static void easy24708_1_2() {
         getGreyImage("src/input/24708_1_2.jpg", 164);
-        ArrayList<Integer> largestIndex = labelComponents();
+        ArrayList<Integer> largestIndex = labelComponents(2);
         getLargestComponents(largestIndex);
         drawImg();
 //        dilate();
@@ -84,7 +84,7 @@ public class Helper {
         rangePoints = new int[][]{{1720, 528}, {512, 1144}};
         getGreyImage("src/input/24708.jpg", 165);
 
-        ArrayList<Integer> largestIndex = labelComponents();
+        ArrayList<Integer> largestIndex = labelComponents(2);
         getLargestComponents(largestIndex);
         dilate();
         dilate();
@@ -159,7 +159,7 @@ public class Helper {
 //        }
     }
 
-    public ArrayList<double[]> processImg(BufferedImage img, int[][] rectangle) {
+    public ArrayList<double[]> processImg(BufferedImage img, int[][] rectangle, int k) {
         maxHeight = 0;
         maxWidth = 0;
         minHeight = 99999;
@@ -176,7 +176,7 @@ public class Helper {
 
         getGreyImageFromInput(img);
         thresholdImg();
-        ArrayList<Integer> largestIndex = labelComponents();
+        ArrayList<Integer> largestIndex = labelComponents(k);
         getLargestComponents(largestIndex);
         dilate();
         dilate();
@@ -542,11 +542,12 @@ public class Helper {
         }
     }
 
-    private static ArrayList<Integer> labelComponents() {
+    private static ArrayList<Integer> labelComponents(int k) {
         int index = 1;
         int largestComponentIndex = 0;
         int maxElements = 0;
-        ArrayList<Integer> indexElementsMap = new ArrayList<>();
+//        ArrayList<Integer> indexElementsMap = new ArrayList<>();
+        TreeMap<Integer,Integer> indexElementsMap = new TreeMap<>();
         labeledGrayscaleArray = new int[height][width];
 //        int[][] fourConn = {{-1, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}};
         int[][] fourConn = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
@@ -575,15 +576,21 @@ public class Helper {
                         maxElements = elements;
                     }
                     if (elements > 400) {
-                        indexElementsMap.add(index);
+//                        indexElementsMap.add(index);
+                        indexElementsMap.put(elements,index);
                     }
                     index += 1;
                 }
             }
         }
+        ArrayList<Integer>keys = new ArrayList<>(indexElementsMap.keySet());
+        ArrayList<Integer>kLargestComponents = new ArrayList<>();
+        for(int i =keys.size()-1;i>keys.size()-k-1 && i>=0;i--){
+            kLargestComponents.add(indexElementsMap.get(keys.get(i)));
+        }
 //        return indexElementsMap.get(1);
 //        return largestComponentIndex;
-        return indexElementsMap;
+        return kLargestComponents;
     }
 
     private static int threshold(int thrValue, int grayscaleValue) {

@@ -5,10 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.RescaleOp;
-import java.awt.image.WritableRaster;
+import java.awt.geom.AffineTransform;
+import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,7 +51,7 @@ public class GUI extends JFrame {
 
         //erase button
         JButton eraseBtn = new JButton("Erase");
-        eraseBtn.setBounds(50, 500, 140, 40);
+        eraseBtn.setBounds(50, 540, 140, 40);
         eraseBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onClickErase();
@@ -63,7 +61,7 @@ public class GUI extends JFrame {
 
         //undo button
         JButton undoBtn = new JButton("Undo");
-        undoBtn.setBounds(50, 420, 140, 40);
+        undoBtn.setBounds(50, 290, 140, 40);
         undoBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 undo();
@@ -84,14 +82,23 @@ public class GUI extends JFrame {
             }
         });
 
+        //increase contrast button
+        JButton increaseContrastBtn = new JButton("Increase Contrast");
+        increaseContrastBtn.setBounds(50, 140, 140, 40);
+        increaseContrastBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                increaseContrast();
+            }
+        });
+
         //text step2
         JLabel textDrawRange = new JLabel("Step2: Draw region-of-interest");
         textDrawRange.setVisible(true);
-        textDrawRange.setBounds(50, 140, 300, 40);
+        textDrawRange.setBounds(50, 180, 300, 40);
 
         //draw rectangle button
         JButton drawRectBtn = new JButton("Draw a rectangle");
-        drawRectBtn.setBounds(50, 170, 140, 40);
+        drawRectBtn.setBounds(50, 210, 140, 40);
         drawRectBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -102,7 +109,7 @@ public class GUI extends JFrame {
 
         //draw polygon button
         JButton drawPolyBtn = new JButton("Draw a polygon");
-        drawPolyBtn.setBounds(50, 210, 140, 40);
+        drawPolyBtn.setBounds(50, 250, 140, 40);
         drawPolyBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -113,7 +120,7 @@ public class GUI extends JFrame {
 
         //complete drawing button
         JButton completedrawBtn = new JButton("Complete");
-        completedrawBtn.setBounds(50, 250, 140, 40);
+        completedrawBtn.setBounds(50, 330, 140, 40);
         completedrawBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -121,11 +128,15 @@ public class GUI extends JFrame {
             }
         });
 
-        //input threshold value
-        JLabel textInputThreshold = new JLabel("Step3: Input threshold value(0~255): ");
-        JTextField thresholdField = new JTextField(12);
-        textInputThreshold.setBounds(50, 290, 260, 40);
-        thresholdField.setBounds(50, 330, 140, 40);
+        //step3 Get k largest components.
+        JLabel textStep3 = new JLabel("Step3: Get k largest components.");
+        textStep3.setBounds(50, 370, 260, 40);
+        //input k value
+        JLabel textKvalue = new JLabel("Input k value(1~10): ");
+        textKvalue.setBounds(50, 390, 260, 40);
+
+        JTextField kValue = new JTextField(12);
+        kValue.setBounds(50, 420, 140, 40);
 
         //imageLabel
         imageLabel.addMouseListener(new MouseAdapter() {
@@ -134,9 +145,14 @@ public class GUI extends JFrame {
             }
         });
 
+        //text step4
+        JLabel textRun = new JLabel("Step4: Run");
+        textRun.setVisible(true);
+        textRun.setBounds(50, 450, 300, 40);
+
         //run button
         JButton runBtn = new JButton("Run");
-        runBtn.setBounds(50, 460, 140, 40);
+        runBtn.setBounds(50, 490, 140, 40);
         runBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -145,7 +161,7 @@ public class GUI extends JFrame {
                     quadrupleRangePoints[i]=new int[]{rangePoints.get(i)[0]*4,rangePoints.get(i)[1]*4};
                 }
                 Helper helper = new Helper();
-                ArrayList<double[]> result = helper.processImg(originImg, quadrupleRangePoints);
+                ArrayList<double[]> result = helper.processImg(originImg, quadrupleRangePoints, Integer.parseInt(kValue.getText()));
                 textLength.setText("The Sperm Length: " + (int) (result.size() *Math.sqrt(2) / (3.06)) + " micrometers");
                 RectImg = drewImg.createGraphics();
                 RectImg.setColor(Color.BLUE);
@@ -161,14 +177,17 @@ public class GUI extends JFrame {
 
 
         //draw GUI
+        add(kValue);
+        add(textKvalue);
+        add(textStep3);
+        add(increaseContrastBtn);
+        add(textRun);
         add(completedrawBtn);
         add(textDrawRange);
         add(textUpload);
         add(drawPolyBtn);
         add(undoBtn);
         add(imgName);
-//        add(textInputThreshold);
-//        add(thresholdField);
         add(runBtn);
         add(drawRectBtn);
         add(uploadBtn);
@@ -176,6 +195,20 @@ public class GUI extends JFrame {
         add(textLength);
         setSize(1000, 800);
         setVisible(true);
+    }
+
+    private void increaseContrast(){
+        RescaleOp op = new RescaleOp(1.2f, 0, null);
+        originImg = op.filter(originImg, originImg);
+        scaledImg = originImg.getScaledInstance(512, 512, java.awt.Image.SCALE_SMOOTH);
+        drewImg = deepCopy(toBufferedImage(scaledImg));
+        imageLabel.setIcon(null);
+        imageLabel.setIcon(new ImageIcon(scaledImg));
+        imageLabel.setBounds(300, 50, 512, 512);
+        add(imageLabel);
+        imageLabel.setVisible(true);
+        pack();
+        setSize(1000, 800);
     }
 
 
