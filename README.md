@@ -93,4 +93,15 @@ For example, I only count components larger than 400 pixels in size. And I used 
 The most significant coding component is `Adaptive threshold by mean value` and `Process the outline of the final result`.
 
 ### Adaptive threshold by mean value
-In order to process the image, the first step is always threshold the image. At first, my threshold algorithm is what I learned from the class. But it didn't work for some images. These images are unevenly distributed in brightness.
+In order to process the image, the first step is always threshold the image. At first, my threshold algorithm is what I learned from the class. But it didn't work for some images. These images are unevenly distributed in brightness. If I set a low value as the threshold value for all pixels, then bright areas will have a lot of noise. 
+If I set a high value as the threshold value for all pixels, then we can't see any result in dark areas.
+
+24708.1_3 at 20X.jpg:
+
+Threshold value: 155
+
+![24708_1_3_thrvalue_155.jpg]()
+
+Threshold value: 180
+
+![24708_1_3_thrvalue_180.jpg]()

@@ -30,11 +30,17 @@ public class Helper {
     private static int[][] rangePoints;
 
     public static void main(String[] args) {
-
-        easy24708_1_1();
+        test();
+//        easy24708_1_1();
 //        easy24708_1_2();
 //        easy24708_1_3();
 //        medium24708_1_6();
+    }
+
+    private static void test(){
+        rangePoints = new int[][]{{0, 0}, {3000, 3000}};
+        getGreyImage("src/input/24708_1_3.jpg", 155);
+        drawImg();
     }
 
     private static void medium24708_1_6() {
@@ -649,7 +655,7 @@ public class Helper {
 //                    grayscaleArray[y][x] = (255 << 24) | (0);
 //                }
 //            }
-
+//        }
     }
 
     private static void writeFile() {
