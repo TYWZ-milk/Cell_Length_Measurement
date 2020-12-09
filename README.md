@@ -3,6 +3,20 @@ wustl-CSE556A final project.
 
 Measuring length of sperm cells of fruit flies.
 
+  * [What required/wish-list features I have accomplished](#what-required-wish-list-features-i-have-accomplished)
+    + [Required features](#required-features)
+    + [Wish-list features:](#wish-list-features-)
+  * [Description of core algorithms](#description-of-core-algorithms)
+    + [Adaptive threshold by mean value](#adaptive-threshold-by-mean-value)
+    + [Process the outline of the final result](#process-the-outline-of-the-final-result)
+  * [GUI development](#gui-development)
+  * [How to use my tool](#how-to-use-my-tool)
+  * [Bugs and future work](#bugs-and-future-work)
+  * [Experimental results of all images](#experimental-results-of-all-images)
+    + [Easy](#easy)
+    + [Medium](#medium)
+    + [Hard](#hard)
+  
 ## What required/wish-list features I have accomplished
 
 ### Required features
@@ -173,3 +187,168 @@ Let's use this algorithm on `24708.1_2 at 20X.jpg` again. We get a very perfect 
 
 ![24708_1_2_best_Result.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/24708_1_2_best_Result.png)
 
+## GUI development
+I use JFrame and JLabel in Java to develop my GUI. You can find all code in `GUI.java`.
+
+Step 1:
+* Upload button: By clicking this button, you can upload an image from your machine.
+* Increase contrast: By using RescaleOp in Java, I increase the contrast of the current image 1.2f each time.
+
+Step 2:
+
+* Draw a rectangle: If you are interested in one area, you can draw a rectangle range. You are able to draw a rectangle by two diagonal points of the rectangle. After clicking this button, you can draw two points on the image. These two points are diagonal points of your rectangle range.
+Then you can click 'Complete' button, it will draw a rectangle automatically.
+* Draw a polygon: Same as the 'Draw a rectangle'. You can draw a polygon and the shape of the polygon is decided by you.
+After clicking this button, you can draw as many point as you want on the image. These points are points of the polygon.
+Remember you need to draw your points clockwise or counterclockwise, because I will connect these points in the order in which you draw them to form a polygon.
+Then you can click 'Complete' button, it will connect points automatically.
+* Undo: Delete points you just drew.
+* Complete: After drawing points, click this button to form a range.
+
+Step 3:
+
+* Input k value: Input the k value. k is how many largest components you want to get. For different images, you may want to specific different k value to get the best results.
+
+Step 4:
+* Run: After clicking this button, I will use my algorithms to process your image and display the output on the image.
+* Erase: Clear the canvas. Delete all points, lines on the image.
+
+Text & Image:
+
+After you upload your image, you will see it on the right of the GUI. And you will see the name of this image at the top and the length of the cell at the bottom
+
+## How to use my tool
+My code used Java language. Make sure your machine can run Java program.
+
+1. Download the code. Run 'GUI.java'.
+2. You can see my interface. Now, click the button 'Upload' to upload an image.
+After uploading, you will see your image at the right of the interface.
+3. Optional: If you think your image is too dark, click "Increase Contrast". You can click that button as many times as you want.
+And you will see your result at the right of the interface.
+4. Draw the interest-range. 
+
+    a. If you want to draw a rectangle range, click "Draw a rectangle". And then you can draw only two points on the image.
+    These two points are diagonal points of the rectangle range. Then you can click 'Complete' button, it will draw a rectangle automatically.
+    
+    b. If you want to draw a polygon range, click "Draw a polygon". After clicking this button, you can draw as many point as you want on the image. 
+    These points are points of the polygon. Remember you need to draw your points clockwise or counterclockwise, because I will connect these points in the order in which you draw them to form a polygon. 
+    Then you can click 'Complete' button, it will connect points automatically.
+
+5. Optional: If you draw a wrong point, you can click "Undo" button to delete it. You can undo as many times as you want until there are no points on the image.
+6. Input k value. The range of k value is from 1 to 10. Different images may have different k values to get the best results.
+7. Click 'Run' button. After clicking this button, I will use my algorithms to process your images. And you will see the cell on the image which you uploaded before.
+You will also see the length of the cell at the bottom of the image.
+8. Click 'Erase' button to clear the canvas. You can continue to draw a new range or upload a new image.
+
+## Bugs and future work
+
+1. Like what I said about my `Process the outline of the final result`, this algorithm can continue to be optimized. I can't prove the correctness of this algorithm.
+And I don't have enough data to prove its result.
+It's not a bug. But in the future, we can continue to work on this algorithm. Make sure we will not see some broken parts in the cell.
+
+2. My algorithms can't handle the huge debris which is connected with the cell. We can continue to find a good way to handle this kind of debris.
+
+3. For some images which are very dark, my algorithms can't output good results. We can continue to work on this in the future to find a better way to handle the dark image.
+
+## Experimental results of all images
+### Easy
+24708.1_1 at 20X.jpg: Draw a rectangle and set k = 1. 
+
+My best result is 2030. The ground truth is 1951. The deviation is 4.05%.
+
+![result_24708.1_1_at_20X.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/easy/result_24708.1_1_at_20X.png)
+
+24708.1_2 at 20X.jpg: Draw a polygon and set k = 1. 
+
+My best result is 1786. The ground truth is 1787. The deviation is 0.06%.
+
+![result_24708.1_2_at_20X.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/easy/result_24708.1_2_at_20X.png)
+
+24708.1_3 at 20X.jpg: Draw a rectangle and set k = 2. 
+
+My best result is 1842. The ground truth is 1786. The deviation is 3.14%.
+
+![result_24708.1_3_at_20X.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/easy/result_24708.1_3_at_20X.png)
+
+### Medium
+24708.1_4 at 20X.jpg: Draw a polygon and set k = 2. 
+
+My best result is 1678. The ground truth is 1681. The deviation is 0.18%.
+
+![result_24708.1_4_at_20X.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/medium/result_24708.1_4_at_20X.png)
+
+24708.1_5 at 20X.jpg: Draw a polygon and set k = 1. 
+
+My best result is 2213. The ground truth is 1952. The deviation is 13.37%.
+
+![result_24708.1_5_at_20X.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/medium/result_24708.1_5_at_20X.png)
+
+24708.1_6 at 20X.jpg: Draw a rectangle and set k = 7. 
+
+My best result is 2587. The ground truth is 1991. The deviation is 29.93%.
+
+![result_24708.1_6_at_20X.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/medium/result_24708.1_6_at_20X.png)
+
+WT.C.1_20x.jpg: Increase contrast 3 times and draw a polygon and set k = 9. 
+
+My best result is 978. The ground truth is 1090. The deviation is 10.28%.
+
+![result_WT.C.1_20x.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/medium/result_WT.C.1_20x.png)
+
+WT.C.2_20x.jpg: Increase contrast 4 times and draw a polygon and set k = 9. 
+
+My best result is 2178. The ground truth is 1847. The deviation is 17.92%.
+
+![result_WT.C.2_20x.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/medium/result_WT.C.2_20x.png)
+
+
+### Hard
+
+28369.2.6_2.jpg: Draw a rectangle and set k = 1. 
+
+My best result is 2000. The ground truth is 1798.116. The deviation is 11.23%.
+
+![result_28369.2.6_2.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_28369.2.6_2.png)
+
+28369.2.6_3.jpg: Draw a rectangle and set k = 1. 
+
+My best result is 2070. The ground truth is 1820.409. The deviation is 13.74%.
+
+![result_28369.2.6_3.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_28369.2.6_3.png)
+
+472.1A.1_5.jpg: Increase contrast 5 times, draw a rectangle and set k = 1. 
+
+My best result is 1680. The ground truth is 1827.506. The deviation is 7.94%.
+
+![result_472.1A.1_5.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_472.1A.1_5.png)
+
+472.1A.1_4.jpg: Draw a rectangle and set k = 1. 
+
+My best result is 1541. The ground truth is 1836.393. The deviation is 16.07%.
+
+![result_472.1A.1_4.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_472.1A.1_4.png)
+
+LHM.1B.3_2&3.jpg: Draw a polygon and set k = 6. 
+
+My best result is 1733. The ground truth is 1847. The deviation is 6.17%.
+
+![result_LHM.1B.3_2&3.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_LHM.1B.3_2&3.png)
+
+
+LHM.1B.3_7.jpg: Draw a rectangle and set k = 1. 
+
+My best result is 1571. The ground truth is 1849.383. The deviation is 15.05%.
+
+![result_LHM.1B.3_7.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_LHM.1B.3_7.png)
+
+472.1B.1_5&6.jpg: Draw a rectangle and set k = 1. 
+
+My best result is 2061. The ground truth is 1870.82. The deviation is 10.17%.
+
+![result_472.1B.1_5&6.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_472.1B.1_5&6.png)
+
+53387.1B.2_7&8.jpg: Increase contrast 5 times and draw a polygon and set k = 7. 
+
+My best result is 2088. The ground truth is 1873.806. The deviation is 11.43%.
+
+![result_53387.1B.2_7&8.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_53387.1B.2_7&8.png)

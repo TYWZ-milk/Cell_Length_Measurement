@@ -30,7 +30,7 @@ public class GUI extends JFrame {
 
     private void valueInit() {
         drawPolygon = false;
-        rangePoints=new ArrayList<>();
+        rangePoints = new ArrayList<>();
     }
 
     private GUI() {
@@ -59,6 +59,23 @@ public class GUI extends JFrame {
             }
         });
 
+        //download button
+        JButton downloadBtn = new JButton("Download");
+        downloadBtn.setBounds(50, 580, 140, 40);
+        downloadBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String filename = "result" +
+                        "_" + imgName.getText().split("Image: ")[1];
+                filename = filename.replaceFirst("jpg","png").replace(' ','_');
+                Image downloadImg = drewImg.getScaledInstance(2048, 2048, java.awt.Image.SCALE_SMOOTH);
+                try {
+                    ImageIO.write(toBufferedImage(downloadImg) , "png", new File(filename));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
         //undo button
         JButton undoBtn = new JButton("Undo");
         undoBtn.setBounds(50, 290, 140, 40);
@@ -78,7 +95,7 @@ public class GUI extends JFrame {
         uploadBtn.setBounds(50, 100, 140, 40);
         uploadBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onClickUpload(fc,imgName);
+                onClickUpload(fc, imgName);
             }
         });
 
@@ -103,7 +120,7 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 drawRect = true;
-                rangePoints=new ArrayList<>();
+                rangePoints = new ArrayList<>();
             }
         });
 
@@ -114,7 +131,7 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 drawPolygon = true;
-                rangePoints=new ArrayList<>();
+                rangePoints = new ArrayList<>();
             }
         });
 
@@ -156,13 +173,13 @@ public class GUI extends JFrame {
         runBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                quadrupleRangePoints=new int[rangePoints.size()][2];
-                for(int i =0;i<quadrupleRangePoints.length;i++){
-                    quadrupleRangePoints[i]=new int[]{rangePoints.get(i)[0]*4,rangePoints.get(i)[1]*4};
+                quadrupleRangePoints = new int[rangePoints.size()][2];
+                for (int i = 0; i < quadrupleRangePoints.length; i++) {
+                    quadrupleRangePoints[i] = new int[]{rangePoints.get(i)[0] * 4, rangePoints.get(i)[1] * 4};
                 }
                 Helper helper = new Helper();
                 ArrayList<double[]> result = helper.processImg(originImg, quadrupleRangePoints, Integer.parseInt(kValue.getText()));
-                textLength.setText("The Sperm Length: " + (int) (result.size() *Math.sqrt(2) / (3.06)) + " micrometers");
+                textLength.setText("The Sperm Length: " + (int) (result.size() * Math.sqrt(2) / (3.06)) + " micrometers");
                 RectImg = drewImg.createGraphics();
                 RectImg.setColor(Color.BLUE);
                 for (int i = 0; i < result.size(); i++) {
@@ -177,6 +194,7 @@ public class GUI extends JFrame {
 
 
         //draw GUI
+        add(downloadBtn);
         add(kValue);
         add(textKvalue);
         add(textStep3);
@@ -197,7 +215,7 @@ public class GUI extends JFrame {
         setVisible(true);
     }
 
-    private void increaseContrast(){
+    private void increaseContrast() {
         RescaleOp op = new RescaleOp(1.2f, 0, null);
         originImg = op.filter(originImg, originImg);
         scaledImg = originImg.getScaledInstance(512, 512, java.awt.Image.SCALE_SMOOTH);
@@ -212,8 +230,8 @@ public class GUI extends JFrame {
     }
 
 
-    private void undo(){
-        if(rangePoints.size()>0) {
+    private void undo() {
+        if (rangePoints.size() > 0) {
             rangePoints.remove(rangePoints.size() - 1);
             onClickErase();
             RectImg = drewImg.createGraphics();
@@ -230,18 +248,17 @@ public class GUI extends JFrame {
         if (rangePoints.size() > 0) {
             RectImg = drewImg.createGraphics();
             RectImg.setColor(Color.RED);
-            if(drawRect){
+            if (drawRect) {
                 RectImg.drawLine(rangePoints.get(0)[0], rangePoints.get(1)[1], rangePoints.get(0)[0], rangePoints.get(0)[1]);
                 RectImg.drawLine(rangePoints.get(1)[0], rangePoints.get(0)[1], rangePoints.get(0)[0], rangePoints.get(0)[1]);
                 RectImg.drawLine(rangePoints.get(1)[0], rangePoints.get(1)[1], rangePoints.get(0)[0], rangePoints.get(1)[1]);
                 RectImg.drawLine(rangePoints.get(1)[0], rangePoints.get(1)[1], rangePoints.get(1)[0], rangePoints.get(0)[1]);
             }
-            if(drawPolygon){
-                for(int i =0;i<rangePoints.size();i++){
-                    if(i==rangePoints.size()-1){
+            if (drawPolygon) {
+                for (int i = 0; i < rangePoints.size(); i++) {
+                    if (i == rangePoints.size() - 1) {
                         RectImg.drawLine(rangePoints.get(i)[0], rangePoints.get(i)[1], rangePoints.get(0)[0], rangePoints.get(0)[1]);
-                    }
-                    else {
+                    } else {
                         RectImg.drawLine(rangePoints.get(i)[0], rangePoints.get(i)[1], rangePoints.get(i + 1)[0], rangePoints.get(i + 1)[1]);
                     }
                 }
@@ -249,8 +266,8 @@ public class GUI extends JFrame {
         }
         RectImg.dispose();
         imageLabel.setIcon(new ImageIcon(drewImg));
-        drawPolygon=false;
-        drawRect=false;
+        drawPolygon = false;
+        drawRect = false;
     }
 
     private void onClickErase() {
@@ -268,7 +285,7 @@ public class GUI extends JFrame {
         return new BufferedImage(colorModel, writableRaster, isAlphaPremultiplied, null);
     }
 
-    private void onClickUpload(JFileChooser fc,JLabel imgName) {
+    private void onClickUpload(JFileChooser fc, JLabel imgName) {
         int returnVal = fc.showOpenDialog(null);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -289,7 +306,7 @@ public class GUI extends JFrame {
             pack();
             setSize(1000, 800);
 
-            imgName.setText("Image: "+ file.getName() );
+            imgName.setText("Image: " + file.getName());
             System.out.println("Opening: " + file.getName() + ".");
         }
     }
@@ -301,7 +318,7 @@ public class GUI extends JFrame {
         RectImg.drawOval(me.getX(), me.getY(), 3, 3);
         RectImg.dispose();
         imageLabel.setIcon(new ImageIcon(drewImg));
-        rangePoints.add(new int[]{me.getX(),me.getY()});
+        rangePoints.add(new int[]{me.getX(), me.getY()});
 
     }
 
