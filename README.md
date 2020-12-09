@@ -1,6 +1,12 @@
 # Cell_Length_Measurement
 wustl-CSE556A final project.
 
+Name: Yitong Wang.
+
+Please go to this link to see all images: https://github.com/TYWZ-milk/Cell_Length_Measurement.
+You can find all images in src/input and src/output.
+
+
 Measuring length of sperm cells of fruit flies.
 
   * [What required/wish-list features I have accomplished](#what-required-wish-list-features-i-have-accomplished)
@@ -116,11 +122,11 @@ Example: 24708.1_3 at 20X.jpg
 
 Threshold value: 155
 
-![24708_1_3_thrvalue_155.jpg](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/24708_1_3_thrvalue_155.jpg)
+![24708_1_3_thrvalue_155.jpg](./src/output/24708_1_3_thrvalue_155.jpg)
 
 Threshold value: 180
 
-![24708_1_3_thrvalue_180.jpg](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/24708_1_3_thrvalue_180.jpg)
+![24708_1_3_thrvalue_180.jpg](./src/output/24708_1_3_thrvalue_180.jpg)
 
 Therefore, I can't use the normal threshold algorithm. I noticed one important property of the cell. Whether in a bright area or a dark area, the pixel values of cell are always larger than the background.
 This means the pixel values of cell are always larger than the mean value of neighboring pixels. So I decided to use adaptive threshold by mean value.
@@ -138,7 +144,7 @@ Here are steps of my adaptive threshold:
     
 If we still use `24708.1_3 at 20X.jpg` as the input, the output is:
 
-![24708_1_3_adaptive_threshold.jpg](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/24708_1_3_adaptive_threshold.jpg)
+![24708_1_3_adaptive_threshold.jpg](./src/output/24708_1_3_adaptive_threshold.jpg)
 
 Now it's very clear to see the cell.
 
@@ -151,19 +157,19 @@ If we have too many pixels, this will affect our result.
 
 Let's see this example: 24708.1_2 at 20X.jpg.
 
-![24708.1_2_nooptimize.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/24708.1_2_nooptimize.png)
+![24708.1_2_nooptimize.png](./src/output/24708.1_2_nooptimize.png)
 
 The cell looks very good. But the length is 3052 micrometers and the ground truth is 1787. The deviation is 70.79%.
 If we zoom in, you will see something like this.
 
-![zoomin_noptimize.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/zoomin_noptimize.png)
+![zoomin_noptimize.png](./src/output/zoomin_noptimize.png)
 
 I drew some red circles on this image. I think these pixels can be deleted. 
 I think we still can build a good cell outline if most pixels only have 2 neighboring pixels.
 
 I drew some examples here:
 
-![examples_optimize.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/examples_optimize.png)
+![examples_optimize.png](./src/output/examples_optimize.png)
 
 Therefore, I think most pixels can be reduced to only have 2 neighboring pixels.
 
@@ -181,13 +187,13 @@ The step of my algorithm is:
 
 After using my algorithm, the result in the same region is:
 
-![after_optimize.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/after_optimize.png)
+![after_optimize.png](./src/output/after_optimize.png)
 
 I deleted most meaningless pixels. This one looks like a real cell. But I still need to continue to optimize the algorithm, because you can see that there are some places where it is broken.
 
 Let's use this algorithm on `24708.1_2 at 20X.jpg` again. We get a very perfect result. The deviation is less than 1%.
 
-![24708_1_2_best_Result.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/24708_1_2_best_Result.png)
+![24708_1_2_best_Result.png](./src/output/24708_1_2_best_Result.png)
 
 ## GUI development
 I use JFrame and JLabel in Java to develop my GUI. You can find all code in `GUI.java`.
@@ -267,19 +273,19 @@ Deviation | 4.05% | 0.06% | 3.14% |
 
 My best result is 2030. The ground truth is 1951. The deviation is 4.05%.
 
-![result_24708.1_1_at_20X.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/easy/result_24708.1_1_at_20X.png)
+![result_24708.1_1_at_20X.png](./src/output/easy/result_24708.1_1_at_20X.png)
 
 24708.1_2 at 20X.jpg: Draw a polygon and set k = 1. 
 
 My best result is 1786. The ground truth is 1787. The deviation is 0.06%.
 
-![result_24708.1_2_at_20X.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/easy/result_24708.1_2_at_20X.png)
+![result_24708.1_2_at_20X.png](./src/output/easy/result_24708.1_2_at_20X.png)
 
 24708.1_3 at 20X.jpg: Draw a rectangle and set k = 2. 
 
 My best result is 1842. The ground truth is 1786. The deviation is 3.14%.
 
-![result_24708.1_3_at_20X.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/easy/result_24708.1_3_at_20X.png)
+![result_24708.1_3_at_20X.png](./src/output/easy/result_24708.1_3_at_20X.png)
 
 ### Medium
 
@@ -294,31 +300,31 @@ Deviation | -0.18% | 13.37% | 29.93% | -10.28% | 17.92% |
 
 My best result is 1678. The ground truth is 1681. The deviation is 0.18%.
 
-![result_24708.1_4_at_20X.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/medium/result_24708.1_4_at_20X.png)
+![result_24708.1_4_at_20X.png](./src/output/medium/result_24708.1_4_at_20X.png)
 
 24708.1_5 at 20X.jpg: Draw a polygon and set k = 1. 
 
 My best result is 2213. The ground truth is 1952. The deviation is 13.37%.
 
-![result_24708.1_5_at_20X.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/medium/result_24708.1_5_at_20X.png)
+![result_24708.1_5_at_20X.png](./src/output/medium/result_24708.1_5_at_20X.png)
 
 24708.1_6 at 20X.jpg: Draw a rectangle and set k = 7. 
 
 My best result is 2587. The ground truth is 1991. The deviation is 29.93%.
 
-![result_24708.1_6_at_20X.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/medium/result_24708.1_6_at_20X.png)
+![result_24708.1_6_at_20X.png](./src/output/medium/result_24708.1_6_at_20X.png)
 
 WT.C.1_20x.jpg: Increase contrast 3 times and draw a polygon and set k = 9. 
 
 My best result is 978. The ground truth is 1090. The deviation is 10.28%.
 
-![result_WT.C.1_20x.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/medium/result_WT.C.1_20x.png)
+![result_WT.C.1_20x.png](./src/output/medium/result_WT.C.1_20x.png)
 
 WT.C.2_20x.jpg: Increase contrast 4 times and draw a polygon and set k = 9. 
 
 My best result is 2178. The ground truth is 1847. The deviation is 17.92%.
 
-![result_WT.C.2_20x.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/medium/result_WT.C.2_20x.png)
+![result_WT.C.2_20x.png](./src/output/medium/result_WT.C.2_20x.png)
 
 
 ### Hard
@@ -335,47 +341,47 @@ Deviation | 11.23% | 13.74% | -7.94% | -16.07% | -6.17% | -15.05% | 10.17% | 11.
 
 My best result is 2000. The ground truth is 1798.116. The deviation is 11.23%.
 
-![result_28369.2.6_2.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_28369.2.6_2.png)
+![result_28369.2.6_2.png](./src/output/hard/result_28369.2.6_2.png)
 
 28369.2.6_3.jpg: Draw a rectangle and set k = 1. 
 
 My best result is 2070. The ground truth is 1820.409. The deviation is 13.74%.
 
-![result_28369.2.6_3.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_28369.2.6_3.png)
+![result_28369.2.6_3.png](./src/output/hard/result_28369.2.6_3.png)
 
 472.1A.1_5.jpg: Increase contrast 5 times, draw a rectangle and set k = 1. 
 
 My best result is 1680. The ground truth is 1827.506. The deviation is 7.94%.
 
-![result_472.1A.1_5.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_472.1A.1_5.png)
+![result_472.1A.1_5.png](./src/output/hard/result_472.1A.1_5.png)
 
 472.1A.1_4.jpg: Draw a rectangle and set k = 1. 
 
 My best result is 1541. The ground truth is 1836.393. The deviation is 16.07%.
 
-![result_472.1A.1_4.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_472.1A.1_4.png)
+![result_472.1A.1_4.png](./src/output/hard/result_472.1A.1_4.png)
 
 LHM.1B.3_2&3.jpg: Draw a polygon and set k = 6. 
 
 My best result is 1733. The ground truth is 1847. The deviation is 6.17%.
 
-![result_LHM.1B.3_2&3.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_LHM.1B.3_2&3.png)
+![result_LHM.1B.3_2&3.png](./src/output/hard/result_LHM.1B.3_2&3.png)
 
 
 LHM.1B.3_7.jpg: Draw a rectangle and set k = 1. 
 
 My best result is 1571. The ground truth is 1849.383. The deviation is 15.05%.
 
-![result_LHM.1B.3_7.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_LHM.1B.3_7.png)
+![result_LHM.1B.3_7.png](./src/output/hard/result_LHM.1B.3_7.png)
 
 472.1B.1_5&6.jpg: Draw a rectangle and set k = 1. 
 
 My best result is 2061. The ground truth is 1870.82. The deviation is 10.17%.
 
-![result_472.1B.1_5&6.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_472.1B.1_5&6.png)
+![result_472.1B.1_5&6.png](./src/output/hard/result_472.1B.1_5&6.png)
 
 53387.1B.2_7&8.jpg: Increase contrast 5 times and draw a polygon and set k = 7. 
 
 My best result is 2088. The ground truth is 1873.806. The deviation is 11.43%.
 
-![result_53387.1B.2_7&8.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/hard/result_53387.1B.2_7&8.png)
+![result_53387.1B.2_7&8.png](./src/output/hard/result_53387.1B.2_7&8.png)
