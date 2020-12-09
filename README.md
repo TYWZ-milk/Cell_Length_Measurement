@@ -40,6 +40,7 @@ Measuring length of sperm cells of fruit flies.
    * Users can input how many largest components they want.
    * Users can clear the canvas.
    * Users can draw points on the canvas by clicking the image.
+   * Users can download the processed images.
    
 3. Small deviation from ground truth Works for all easy examples.
 
@@ -90,6 +91,7 @@ Measuring length of sperm cells of fruit flies.
     * Undo: If users want to delete points what they drew before, they can click "undo" button. It will undo what you did.
     * Complete: After drawing points on the image, users can click this button to draw lines automatically.
     * Erase: After clicking this button, the canvas will be cleared.
+    * Download: Users can download processed images.
     
 ## Description of core algorithms
 The core algorithms are consist of 7 algorithms.
@@ -212,6 +214,7 @@ Step 3:
 Step 4:
 * Run: After clicking this button, I will use my algorithms to process your image and display the output on the image.
 * Erase: Clear the canvas. Delete all points, lines on the image.
+* Download: After clicking this button, my program will download your processed images in your current folder. The name of new image is "result_[your file name].png".
 
 Text & Image:
 
@@ -239,6 +242,7 @@ And you will see your result at the right of the interface.
 7. Click 'Run' button. After clicking this button, I will use my algorithms to process your images. And you will see the cell on the image which you uploaded before.
 You will also see the length of the cell at the bottom of the image.
 8. Click 'Erase' button to clear the canvas. You can continue to draw a new range or upload a new image.
+9. Click 'Download' button to download processed images.
 
 ## Bugs and future work
 
@@ -252,6 +256,13 @@ It's not a bug. But in the future, we can continue to work on this algorithm. Ma
 
 ## Experimental results of all images
 ### Easy
+
+File Name | 24708.1_1 at 20X.jpg | 24708.1_2 at 20X.jpg | 24708.1_3 at 20X.jpg |
+--- | --- | --- | --- |
+My best result | 2030 | 1786 | 1842 | 
+Ground truth | 1951 | 1787 | 1786 | 
+Deviation | 4.05% | 0.06% | 3.14% | 
+
 24708.1_1 at 20X.jpg: Draw a rectangle and set k = 1. 
 
 My best result is 2030. The ground truth is 1951. The deviation is 4.05%.
@@ -271,6 +282,14 @@ My best result is 1842. The ground truth is 1786. The deviation is 3.14%.
 ![result_24708.1_3_at_20X.png](https://github.com/TYWZ-milk/Cell_Length_Measurement/blob/master/src/output/easy/result_24708.1_3_at_20X.png)
 
 ### Medium
+
+File Name | 24708.1_4 at 20X.jpg | 24708.1_5 at 20X.jpg | 24708.1_6 at 20X.jpg | WT.C.1_20x.jpg | WT.C.2_20x.jpg |
+--- | --- | --- | --- | --- | --- |
+My best result | 1678 | 2213 | 2587 | 978 | 2178 |
+Ground truth | 1681 | 1952 | 1991 | 1090 | 1847 |
+Deviation | -0.18% | 13.37% | 29.93% | -10.28% | 17.92% |
+
+
 24708.1_4 at 20X.jpg: Draw a polygon and set k = 2. 
 
 My best result is 1678. The ground truth is 1681. The deviation is 0.18%.
@@ -303,6 +322,14 @@ My best result is 2178. The ground truth is 1847. The deviation is 17.92%.
 
 
 ### Hard
+
+File Name | 28369.2.6_2.jpg | 28369.2.6_3.jpg | 472.1A.1_5 | 472.1A.1_4 | LHM.1B.3_2&3 | LHM.1B.3_7 | 472.1B.1_5&6 | 53387.1B.2_7&8 | 472.1A.1_2.jpg | 42568.b4.7 | 472.1A.1_3 |
+--- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | 
+My best result | 2000 | 2070 | 1680 | 1541 | 1733 | 1571 | 2061 | 2088 | bad result | bad result | bad result |
+Ground truth | 1798.116 | 1820.409 | 1827.506 | 1836.393 | 1847 | 1849.383 | 1870.82 | 1873.806 | 1721.22 | 1840.172 | 1849.996 |
+Deviation | 11.23% | 13.74% | -7.94% | -16.07% | -6.17% | -15.05% | 10.17% | 11.43% | N/A | N/A | N/A |
+
+
 
 28369.2.6_2.jpg: Draw a rectangle and set k = 1. 
 
