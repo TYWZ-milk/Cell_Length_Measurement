@@ -22,6 +22,7 @@ public class GUI extends JFrame {
     private ArrayList<int[]> rangePoints;
     private boolean drawPolygon;
     private boolean drawRect;
+    private Color brushColor;
 
     public static void main(String[] args) {
         GUI app = new GUI();
@@ -31,11 +32,61 @@ public class GUI extends JFrame {
     private void valueInit() {
         drawPolygon = false;
         rangePoints = new ArrayList<>();
+        brushColor = Color.RED;
     }
 
     private GUI() {
         setLayout(null);
         valueInit();
+
+        //input stroke sizie
+        JLabel textStrokeSize = new JLabel("Input width of lines(1~10): ");
+        textStrokeSize.setBounds(50, 260, 260, 40);
+
+        JTextField strokeValue = new JTextField(12);
+        strokeValue.setBounds(50, 290, 140, 40);
+
+
+        //text select color
+        JLabel textSelectColor = new JLabel("Select color of your lines and points: ");
+        textSelectColor.setVisible(true);
+        textSelectColor.setBounds(50, 210, 300, 40);
+
+        String[] colorStrings = { "Red", "Blue", "Yellow", "Black", "White", "Green" };
+
+        JComboBox colorList = new JComboBox(colorStrings);
+        colorList.setSelectedIndex(0);
+        colorList.setBounds(50, 230, 140, 40);
+        colorList.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JComboBox cb = (JComboBox)actionEvent.getSource();
+                String colorName = (String)cb.getSelectedItem();
+                switch (colorName) {
+                    case "Red":
+                        brushColor = Color.RED;
+                        break;
+                    case "Blue":
+                        brushColor = Color.BLUE;
+                        break;
+                    case "Yellow":
+                        brushColor = Color.YELLOW;
+                        break;
+                    case "Black":
+                        brushColor = Color.BLACK;
+                        break;
+                    case "White":
+                        brushColor = Color.WHITE;
+                        break;
+                    case "Green":
+                        brushColor = Color.GREEN;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
 
         final JFileChooser fc = new JFileChooser("src/input");
 
@@ -51,7 +102,7 @@ public class GUI extends JFrame {
 
         //erase button
         JButton eraseBtn = new JButton("Erase");
-        eraseBtn.setBounds(50, 540, 140, 40);
+        eraseBtn.setBounds(50, 660, 140, 40);
         eraseBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onClickErase();
@@ -61,7 +112,7 @@ public class GUI extends JFrame {
 
         //download button
         JButton downloadBtn = new JButton("Download");
-        downloadBtn.setBounds(50, 580, 140, 40);
+        downloadBtn.setBounds(50, 700, 140, 40);
         downloadBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String filename = "result" +
@@ -78,7 +129,7 @@ public class GUI extends JFrame {
 
         //undo button
         JButton undoBtn = new JButton("Undo");
-        undoBtn.setBounds(50, 290, 140, 40);
+        undoBtn.setBounds(50, 410, 140, 40);
         undoBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 undo();
@@ -115,7 +166,7 @@ public class GUI extends JFrame {
 
         //draw rectangle button
         JButton drawRectBtn = new JButton("Draw a rectangle");
-        drawRectBtn.setBounds(50, 210, 140, 40);
+        drawRectBtn.setBounds(50, 330, 140, 40);
         drawRectBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -126,7 +177,7 @@ public class GUI extends JFrame {
 
         //draw polygon button
         JButton drawPolyBtn = new JButton("Draw a polygon");
-        drawPolyBtn.setBounds(50, 250, 140, 40);
+        drawPolyBtn.setBounds(50, 370, 140, 40);
         drawPolyBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -137,23 +188,23 @@ public class GUI extends JFrame {
 
         //complete drawing button
         JButton completedrawBtn = new JButton("Complete");
-        completedrawBtn.setBounds(50, 330, 140, 40);
+        completedrawBtn.setBounds(50, 450, 140, 40);
         completedrawBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                completeDrawing();
+                completeDrawing(Integer.parseInt(strokeValue.getText()));
             }
         });
 
         //step3 Get k largest components.
         JLabel textStep3 = new JLabel("Step3: Get k largest components.");
-        textStep3.setBounds(50, 370, 260, 40);
+        textStep3.setBounds(50, 490, 260, 40);
         //input k value
         JLabel textKvalue = new JLabel("Input k value(1~10): ");
-        textKvalue.setBounds(50, 390, 260, 40);
+        textKvalue.setBounds(50, 510, 260, 40);
 
         JTextField kValue = new JTextField(12);
-        kValue.setBounds(50, 420, 140, 40);
+        kValue.setBounds(50, 540, 140, 40);
 
         //imageLabel
         imageLabel.addMouseListener(new MouseAdapter() {
@@ -165,11 +216,11 @@ public class GUI extends JFrame {
         //text step4
         JLabel textRun = new JLabel("Step4: Run");
         textRun.setVisible(true);
-        textRun.setBounds(50, 450, 300, 40);
+        textRun.setBounds(50, 570, 300, 40);
 
         //run button
         JButton runBtn = new JButton("Run");
-        runBtn.setBounds(50, 490, 140, 40);
+        runBtn.setBounds(50, 610, 140, 40);
         runBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -194,6 +245,10 @@ public class GUI extends JFrame {
 
 
         //draw GUI
+        add(strokeValue);
+        add(textStrokeSize);
+        add(textSelectColor);
+        add(colorList);
         add(downloadBtn);
         add(kValue);
         add(textKvalue);
@@ -235,7 +290,7 @@ public class GUI extends JFrame {
             rangePoints.remove(rangePoints.size() - 1);
             onClickErase();
             RectImg = drewImg.createGraphics();
-            RectImg.setColor(Color.RED);
+            RectImg.setColor(brushColor);
             for (int i = 0; i < rangePoints.size(); i++) {
                 RectImg.drawOval(rangePoints.get(i)[0], rangePoints.get(i)[1], 3, 3);
             }
@@ -244,10 +299,11 @@ public class GUI extends JFrame {
         }
     }
 
-    private void completeDrawing() {
+    private void completeDrawing(int strokeSize) {
         if (rangePoints.size() > 0) {
             RectImg = drewImg.createGraphics();
-            RectImg.setColor(Color.RED);
+            RectImg.setStroke(new BasicStroke(strokeSize));
+            RectImg.setColor(brushColor);
             if (drawRect) {
                 RectImg.drawLine(rangePoints.get(0)[0], rangePoints.get(1)[1], rangePoints.get(0)[0], rangePoints.get(0)[1]);
                 RectImg.drawLine(rangePoints.get(1)[0], rangePoints.get(0)[1], rangePoints.get(0)[0], rangePoints.get(0)[1]);
@@ -314,7 +370,7 @@ public class GUI extends JFrame {
     private void imgLabelListner(MouseEvent me) {
         //draw points
         RectImg = drewImg.createGraphics();
-        RectImg.setColor(Color.RED);
+        RectImg.setColor(brushColor);
         RectImg.drawOval(me.getX(), me.getY(), 3, 3);
         RectImg.dispose();
         imageLabel.setIcon(new ImageIcon(drewImg));

@@ -91,14 +91,21 @@ Measuring length of sperm cells of fruit flies.
     
 3. GUI interface has some helpful buttons like redo button, eraser button.
 
-    How to accomplish: There are five buttons to help users draw the interest-range.
+    How to accomplish: There are some buttons to help users draw the interest-range.
+    * Select color: users can select the color of points and lines.
+    * Input the width of lines: Users can input the width of lines.
     * Draw a rectangle: After clicking this button, users can draw two points by clicking on the image. After clicking the "complete" button, it will draw a rectangle on the image. Those two points are diagonal points of the rectangle.
     * Draw a polygon: After clicking this button, users can draw as many points as they want by clicking on the image.  After clicking the "complete" button, it will draw a polygon on the image. Those points are points of the polygon.
     * Undo: If users want to delete points what they drew before, they can click "undo" button. It will undo what you did.
     * Complete: After drawing points on the image, users can click this button to draw lines automatically.
     * Erase: After clicking this button, the canvas will be cleared.
     * Download: Users can download processed images.
+
+4. Users can draw lines on images. And they can change color and width of lines.
     
+    How to accomplish: In the step 2, users can set the color of points and lines. They can also set the width of lines.
+    Users don't need to draw lines. My algorithms can draw lines automatically.
+
 ## Description of core algorithms
 The core algorithms are consist of 7 algorithms.
 * Adaptive threshold by mean value.
@@ -203,7 +210,8 @@ Step 1:
 * Increase contrast: By using RescaleOp in Java, I increase the contrast of the current image 1.2f each time.
 
 Step 2:
-
+* Select Color: Users can select the color of points and lines, there are six colors.
+* Input the width of lines: Users can input the width of lines.
 * Draw a rectangle: If you are interested in one area, you can draw a rectangle range. You are able to draw a rectangle by two diagonal points of the rectangle. After clicking this button, you can draw two points on the image. These two points are diagonal points of your rectangle range.
 Then you can click 'Complete' button, it will draw a rectangle automatically.
 * Draw a polygon: Same as the 'Draw a rectangle'. You can draw a polygon and the shape of the polygon is decided by you.
@@ -229,17 +237,19 @@ After you upload your image, you will see it on the right of the GUI. And you wi
 ## How to use my tool
 My code used Java language. Make sure your machine can run Java program.
 
-1. Download the code. Run 'GUI.java'.
+1. Download the code. Run 'GUI.java' in your IDE.
 2. You can see my interface. Now, click the button 'Upload' to upload an image.
 After uploading, you will see your image at the right of the interface.
 3. Optional: If you think your image is too dark, click "Increase Contrast". You can click that button as many times as you want.
 And you will see your result at the right of the interface.
 4. Draw the interest-range. 
-
-    a. If you want to draw a rectangle range, click "Draw a rectangle". And then you can draw only two points on the image.
+    
+    a. Select the color and width of your points and lines.
+    
+    b. If you want to draw a rectangle range, click "Draw a rectangle". And then you can draw only two points on the image.
     These two points are diagonal points of the rectangle range. Then you can click 'Complete' button, it will draw a rectangle automatically.
     
-    b. If you want to draw a polygon range, click "Draw a polygon". After clicking this button, you can draw as many point as you want on the image. 
+    c. If you want to draw a polygon range, click "Draw a polygon". After clicking this button, you can draw as many point as you want on the image. 
     These points are points of the polygon. Remember you need to draw your points clockwise or counterclockwise, because I will connect these points in the order in which you draw them to form a polygon. 
     Then you can click 'Complete' button, it will connect points automatically.
 
