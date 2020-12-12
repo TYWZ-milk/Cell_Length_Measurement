@@ -235,9 +235,9 @@ Text & Image:
 After you upload your image, you will see it on the right of the GUI. And you will see the name of this image at the top and the length of the cell at the bottom
 
 ## How to use my tool
-My code used Java language. Make sure your machine can run Java program.
+My code used Java language. Make sure your machine can run Java program. The version of my SDK is 11. 
 
-1. Download the code. Run 'GUI.java' in your IDE.
+1. Download the code. Run 'GUI.java' in your IDE. My IDE is IntelliJ IDEA. After downloading, I need to specific the source and output folder and SDK in File-> Project Structure.
 2. You can see my interface. Now, click the button 'Upload' to upload an image.
 After uploading, you will see your image at the right of the interface.
 3. Optional: If you think your image is too dark, click "Increase Contrast". You can click that button as many times as you want.
