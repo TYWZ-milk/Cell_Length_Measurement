@@ -1,5 +1,5 @@
 # Cell_Length_Measurement
-wustl-CSE556A final project.
+Washington University in St. Louis -CSE556A final project.
 
 Name: Yitong Wang.
 
